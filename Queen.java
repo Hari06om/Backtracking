@@ -3,21 +3,24 @@ import java.util.Scanner;
 public class Queen {
     
     // Solve N-Queens
-    public static void nQueens(char[][] board, int row, int[] solutionCount) {
+    public static boolean  nQueens(char[][] board, int row, int[] solutionCount) {
         if (row == board.length) {
             solutionCount[0]++;
-            System.out.println("Solution #" + solutionCount[0] + ":");
-            printBoard(board);
-            return;
+            // System.out.println("Solution #" + solutionCount[0] + ":");
+            // printBoard(board);
+            return true ;
         }
 
         for (int col = 0; col < board.length; col++) {
             if (isSafe(board, row, col)) {
                 board[row][col] = 'Q';
-                nQueens(board, row + 1, solutionCount);
+                if(  nQueens(board, row + 1, solutionCount)){
+                    return true;
+                }
                 board[row][col] = '.'; // backtrack
             }
         }
+        return false;
     }
 
     // Check if placing queen is safe
@@ -50,7 +53,7 @@ public class Queen {
             }
             System.out.println();
         }
-        System.out.println("---------------------------");
+        // System.out.println("---------------------------");
     }
 
     public static void main(String[] args) {
@@ -68,7 +71,14 @@ public class Queen {
         }
 
         int[] solutionCount = {0};
-        nQueens(board, 0, solutionCount);
+        if(nQueens(board, 0, solutionCount)){
+            System.out.println("Total solutions: " + solutionCount[0]);
+            System.out.println("---------------------------");
+            System.out.println("Final board:");
+            printBoard(board);
+            System.out.println("---------------------------");
+            sc.close();
+        }
 
         if (solutionCount[0] == 0) {
             System.out.println("No solutions found for N = " + n);
